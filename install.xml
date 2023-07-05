@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name><![CDATA[Zone List status]]></name>
+  <code><![CDATA[prai_zone_list_status]]></code>
+	<version><![CDATA[1.0]]></version>
+	<author><![CDATA[REDS PRAI]]></author>
+	<link><![CDATA[https://www.agenciaprai.com/]]></link>
+		
+    <file path="admin/controller/localisation/zone.php" error="skip">
+			<operation>
+				<search><![CDATA['code'    => $result['code'],]]></search>
+				<add position="after" trim="true"><![CDATA[
+				'default' => ($result['country_id'] == $this->config->get('config_country_id') ? '<i class="fa fa-check fa-lg text-success"></i>' : '<i class="fa fa-minus fa-lg text-danger"></i>'),
+				'status'  => $result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled'),
+				]]></add>
+			</operation>
+    </file>
+		<file path="admin/view/template/localisation/zone_list.twig" error="skip">
+			<operation>
+				<search><![CDATA[<td class="text-left">{% if sort == 'c.name' %}]]></search>
+				<add position="before"><![CDATA[<td class="text-center">ID</td>]]></add>
+			</operation>
+			<operation>
+				<search><![CDATA[<td class="text-left">{{ zone.country }}</td>]]></search>
+				<add position="before"><![CDATA[<td class="text-center">{{ zone.zone_id }}</td>]]></add>
+			</operation>
+			<operation>
+				<search><![CDATA[<td class="text-right">{{ column_action }}</td>]]></search>
+				<add position="before" trim="true"><![CDATA[
+				<td class="text-center">Default</td>		
+				<td class="text-center">status</td>	
+				]]></add>
+			</operation>
+			<operation>
+				<search><![CDATA[<td class="text-left">{{ zone.code }}</td>]]></search>
+				<add position="after"><![CDATA[
+				<td class="text-center">{{ zone.default }}</td>
+				<td class="text-center">{{ zone.status }}</td>
+				]]></add>
+			</operation>
+			<operation>
+				<search><![CDATA[<td class="text-center" colspan="5">]]></search>
+				<add position="replace"><![CDATA[<td class="text-center" colspan="8">]]></add>
+			</operation>
+			
+		</file>
+
+</modification>
